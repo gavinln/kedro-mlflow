@@ -45,3 +45,7 @@
 example_iris_data:
   type: pandas.CSVDataSet
   filepath: data/01_raw/iris.csv
+
+day:
+  type: text.TextDataSet
+  filepath: src/kedro_mlflow/example-pipeline/day_text.txt
