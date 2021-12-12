@@ -4,28 +4,28 @@ from kedro.runner import SequentialRunner
 
 
 # Prepare first node
-def return_greeting():
+def greeting():
     return "Hello"
 
 
-return_greeting_node = node(
-    func=return_greeting, inputs=None, outputs="my_salutation"
-)
+greeting_node = node(func=greeting, inputs=None, outputs="my_greeting")
+
+# Run first node
+print(greeting_node.run())
+
 
 # Prepare second node
-def join_statements(greeting):
-    return f"{greeting} Kedro!"
 
 
-join_statements_node = node(
-    join_statements, inputs="my_salutation", outputs="my_message"
+def greet_person(greeting, day):
+    return f"{greeting} Kedro! on {day}"
+
+
+greet_person_node = node(
+    greet_person, inputs=["my_greeting", "day"], outputs="my_message"
 )
 
 
-pipeline = Pipeline([return_greeting_node, join_statements_node])
-
-data_catalog = DataCatalog({"my_salutation": MemoryDataSet()})
-
-runner = SequentialRunner()
-
-print(runner.run(pipeline, data_catalog))
+# Run second node with different inputs
+print(greet_person_node.run(dict(my_greeting="Hello", day="Tuesday")))
+print(greet_person_node.run(dict(my_greeting="Hi", day="Tuesday")))
